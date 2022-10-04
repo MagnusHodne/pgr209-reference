@@ -1,3 +1,5 @@
+package no.kristiania.library;
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
@@ -10,7 +12,7 @@ public class LibraryServer {
 
         WebAppContext apiContext = new WebAppContext();
         apiContext.setContextPath("/api");
-        apiContext.addServlet(new ServletHolder(new BooksApiServlet(), "/books"));
+        apiContext.addServlet(new ServletHolder(new BooksApiServlet()), "/books");
         WebAppContext reactContext = new WebAppContext();
         reactContext.setContextPath("/");
         reactContext.setBaseResource(Resource.newClassPathResource("/webapp"));
@@ -22,7 +24,7 @@ public class LibraryServer {
         server.start();
     }
 
-    public void start() {
+    public void start() throws Exception {
         server.start();
     }
 
