@@ -20,7 +20,7 @@ public class LibraryServer {
 
         var apiContext = new ServletContextHandler();
         apiContext.setContextPath("/api");
-        apiContext.addServlet(new ServletHolder(new BooksApiServlet()), "/books");
+        apiContext.addServlet(new ServletHolder(new BooksApiServlet(bookStorage)), "/books");
         var reactContext = new WebAppContext();
         reactContext.setContextPath("/");
         reactContext.setBaseResource(Resource.newClassPathResource("/webapp"));
