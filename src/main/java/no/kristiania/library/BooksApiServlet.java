@@ -8,8 +8,15 @@ import java.io.IOException;
 
 public class BooksApiServlet extends HttpServlet {
 
+    private final BookStorage bookStorage;
+
+    public BooksApiServlet(BookStorage bookStorage) {
+        this.bookStorage = bookStorage;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.getWriter().write(200);
+        res.setContentType("application/json");
+        res.getWriter().print(bookStorage.listAll());
     }
 }
