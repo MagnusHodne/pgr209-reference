@@ -1,7 +1,11 @@
 package no.kristiania.library;
 
+import jakarta.inject.Singleton;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServerConfig extends ResourceConfig {
     public ServerConfig() {
@@ -9,8 +13,12 @@ public class ServerConfig extends ResourceConfig {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(BookRepository.class).to(IBookRepository.class);
+                bind(BookRepository.class).to(IBookRepository.class).in(Singleton.class);
             }
         });
+
+        Map<String, String> props = new HashMap<>();
+        props.put("jersey.config.server.wadl.disableWadl", "true");
+        setProperties(props);
     }
 }
