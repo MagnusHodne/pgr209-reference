@@ -57,7 +57,6 @@
     </dependencies>
 
     <build>
-        <directory>src/main/frontend/dist</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
