@@ -7,60 +7,67 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class LibraryServer {
     private final Server server;
-    private BookStorage bookStorage = new BookStorage();
-
     private static final Logger logger = LoggerFactory.getLogger(LibraryServer.class);
-
-    private static WebAppContext createWebApp() throws IOException {
-        var webContext = new WebAppContext();
-        webContext.setContextPath("/");
-
-        var resources = Resource.newClassPathResource("/webapp");
-        var sourceDirectory = new File(resources.getFile().getAbsoluteFile().toString()
-                .replace('\\', '/')
-                //Copy the frontend code to the target directory
-                .replace("target/classes", "src/main/resources"));
-        if (sourceDirectory.isDirectory()) {
-            webContext.setBaseResource(Resource.newResource(sourceDirectory));
-            webContext.setInitParameter(DefaultServlet.CONTEXT_INIT + "useFileMappedBuffer", "false");
-        } else {
-            webContext.setBaseResource(resources);
-        }
-        return webContext;
-    }
     public LibraryServer(int port) throws IOException {
-
         this.server = new Server(port);
-
-        var apiContext = new ServletContextHandler();
-        apiContext.setContextPath("/api");
-        apiContext.addServlet(new ServletHolder(new BooksApiServlet(bookStorage)), "/books");
-        server.setHandler(new HandlerList(apiContext, createWebApp()));
+        server.setHandler(new HandlerList(createApiContext(), createWebAppContext()));
     }
+
+    private ServletContextHandler createApiContext() {
+        var apiContext = new ServletContextHandler(server, "/api");
+        apiContext.addServlet(new ServletHolder(new ServletContainer(new ServerConfig())), "/*");
+        return apiContext;
+    }
+
+    private WebAppContext createWebAppContext() throws IOException {
+        WebAppContext context = new WebAppContext();
+        context.setContextPath("/");
+
+        Resource resource = Resource.newClassPathResource("/webapp");
+        File sourceDirectory = getSourceDirectory(resource);
+        if (sourceDirectory != null) {
+            context.setBaseResource(Resource.newResource(sourceDirectory));
+            context.setInitParameter(DefaultServlet.CONTEXT_INIT + "useFileMappedBuffer", "false");
+        } else {
+            context.setBaseResource(resource);
+        }
+
+        return context;
+    }
+
+    private static File getSourceDirectory(Resource resource) throws IOException {
+        if (resource.getFile() == null) {
+            return null;
+        }
+        File sourceDirectory = new File(resource.getFile().getAbsolutePath()
+                .replace('\\', '/')
+                .replace("target/classes", "src/main/resources"));
+        return sourceDirectory.exists() ? sourceDirectory : null;
+    }
+
     public static void main(String[] args) throws Exception{
         var server = new LibraryServer(8080);
         server.start();
     }
 
-    public void start() throws Exception {
-        server.start();
-        logger.info("http://" + server.getURI().getHost() + ":" + server.getURI().getPort());
-
-        initBookStorage();
+    public URL getURL() throws MalformedURLException {
+        return server.getURI().toURL();
     }
 
-    private void initBookStorage() {
-        bookStorage.store(new Book(1, "The Lord of the Rings", "J.R.R. Tolkien"));
-        bookStorage.store(new Book(2, "Harry Potter and the Philosopher's Stone", "J.K. Rowling"));
-        bookStorage.store(new Book(3, "And Then There Were None", "Agatha Christie"));
+    public void start() throws Exception {
+        server.start();
+        logger.info("Started server at {}", getURL());
     }
 
 }
