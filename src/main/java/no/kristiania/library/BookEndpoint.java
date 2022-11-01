@@ -13,7 +13,7 @@ import java.util.List;
 public class BookEndpoint {
 
     @Inject
-    private IBookRepository bookStorage;
+    private BookRepository bookStorage;
 
     @POST
     public void addBook(Book book) {

@@ -13,7 +13,7 @@ public class ServerConfig extends ResourceConfig {
         register(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(BookRepository.class).to(IBookRepository.class).in(Singleton.class);
+                bind(JpaBookRepository.class).to(BookRepository.class).in(Singleton.class);
             }
         });
 
