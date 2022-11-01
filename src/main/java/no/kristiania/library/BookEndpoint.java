@@ -6,6 +6,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import no.kristiania.library.database.Book;
+import no.kristiania.library.database.BookRepository;
 
 import java.util.List;
 

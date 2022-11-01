@@ -1,4 +1,4 @@
-package no.kristiania.library;
+package no.kristiania.library.database;
 
 public class Book {
     private final int id;

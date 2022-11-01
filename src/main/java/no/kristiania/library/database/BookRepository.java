@@ -1,4 +1,4 @@
-package no.kristiania.library;
+package no.kristiania.library.database;
 
 import java.util.List;
 

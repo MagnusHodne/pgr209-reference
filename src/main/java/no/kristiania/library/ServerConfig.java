@@ -1,6 +1,8 @@
 package no.kristiania.library;
 
 import jakarta.inject.Singleton;
+import no.kristiania.library.database.BookRepository;
+import no.kristiania.library.database.JpaBookRepository;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
