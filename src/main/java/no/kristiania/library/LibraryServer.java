@@ -53,6 +53,10 @@ public class LibraryServer {
             logger.error("Unable to open src/main/resources/[RESOURCE] because it was null. Did you build the frontend code first?");
             return null;
         }
+        if(resource.getFile() == null){
+            return null;
+        }
+
         File sourceDirectory = new File(resource.getFile().getAbsolutePath()
                 .replace('\\', '/')
                 .replace("target/classes", "src/main/resources"));
