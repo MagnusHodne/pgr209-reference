@@ -46,11 +46,28 @@
             <version>5.0.1</version>
         </dependency>
 
+        <!-- Driver for sql server -->
+        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>11.2.1.jre17</version>
+        </dependency>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>8.5.4</version>
+            <version>9.6.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-sqlserver</artifactId>
+            <version>9.6.0</version>
+        </dependency>
+
+
+
 
 
         <!-- DEPENDENCIES FOR TESTS -->
