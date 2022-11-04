@@ -38,6 +38,21 @@
             <version>3.0.8</version>
         </dependency>
 
+        <!-- DEPENDENCIES FOR DATABASE CONNECTIONS -->
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>8.5.4</version>
+        </dependency>
+
+
         <!-- DEPENDENCIES FOR TESTS -->
         <dependency>
             <groupId>org.logevents</groupId>
@@ -56,6 +71,7 @@
             <version>3.23.1</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

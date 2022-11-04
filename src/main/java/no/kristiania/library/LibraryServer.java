@@ -1,5 +1,6 @@
 package no.kristiania.library;
 
+import no.kristiania.library.database.Database;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -11,6 +12,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,14 +21,14 @@ import java.net.URL;
 public class LibraryServer {
     private final Server server;
     private static final Logger logger = LoggerFactory.getLogger(LibraryServer.class);
-    public LibraryServer(int port) throws IOException {
+    public LibraryServer(int port, DataSource dataSource) throws IOException {
         this.server = new Server(port);
-        server.setHandler(new HandlerList(createApiContext(), createWebAppContext()));
+        server.setHandler(new HandlerList(createApiContext(dataSource), createWebAppContext()));
     }
 
-    private ServletContextHandler createApiContext() {
+    private ServletContextHandler createApiContext(DataSource dataSource) {
         var apiContext = new ServletContextHandler(server, "/api");
-        apiContext.addServlet(new ServletHolder(new ServletContainer(new ServerConfig())), "/*");
+        apiContext.addServlet(new ServletHolder(new ServletContainer(new ServerConfig(dataSource))), "/*");
         return apiContext;
     }
 
@@ -57,7 +59,7 @@ public class LibraryServer {
     }
 
     public static void main(String[] args) throws Exception{
-        var server = new LibraryServer(8080);
+        var server = new LibraryServer(8080, Database.getDataSource());
         server.start();
     }
 
