@@ -49,7 +49,8 @@ public class LibraryServer {
     }
 
     private static File getSourceDirectory(Resource resource) throws IOException {
-        if (resource.getFile() == null) {
+        if(resource == null) {
+            logger.error("Unable to open src/main/resources/[RESOURCE] because it was null. Did you build the frontend code first?");
             return null;
         }
         File sourceDirectory = new File(resource.getFile().getAbsolutePath()
