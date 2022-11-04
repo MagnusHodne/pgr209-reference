@@ -14,6 +14,7 @@
         <java.version>17</java.version>
     </properties>
 
+    <!-- DEPENDENCIES FOR JETTY AND JERSEY -->
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -37,6 +38,7 @@
             <version>3.0.8</version>
         </dependency>
 
+        <!-- DEPENDENCIES FOR TESTS -->
         <dependency>
             <groupId>org.logevents</groupId>
             <artifactId>logevents</artifactId>
@@ -128,12 +130,13 @@
                                 </includes>
                             </resource>
                             <resource>
+                                <!-- Copy logevents.properties and application.properties to same dir as jar-file -->
                                 <type>static</type>
                                 <directory>${project.basedir}/src/main/azure</directory>
                                 <includes>
-                                    <include>**/*.properties</include>
+                                    <include>*.properties</include>
                                 </includes>
-                                <targetPath>/site/wwwroot</targetPath>
+                                <targetPath>.</targetPath>
                             </resource>
                         </resources>
                     </deployment>
