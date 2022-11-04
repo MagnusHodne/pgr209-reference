@@ -5,12 +5,12 @@ import jakarta.inject.Inject;
 import javax.sql.DataSource;
 import java.util.List;
 
-public class JpaBookRepository implements BookRepository {
+public class JdbcBookRepository implements BookRepository {
 
     private final DataSource dataSource;
 
     @Inject
-    public JpaBookRepository(DataSource dataSource) {
+    public JdbcBookRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
     @Override
