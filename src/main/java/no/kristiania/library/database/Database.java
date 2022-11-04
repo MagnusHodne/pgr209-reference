@@ -14,6 +14,7 @@ import java.util.Properties;
 public class Database {
     private static final Logger logger = LoggerFactory.getLogger(Database.class);
     public static DataSource getDataSource() {
+        var dataSource = new HikariDataSource();
         var properties = new Properties();
         try {
             properties.load(new FileReader("application.properties"));
@@ -21,16 +22,16 @@ public class Database {
             logger.error("Unable to load application.properties");
             throw new RuntimeException(e);
         }
+        dataSource.setJdbcUrl(properties.getProperty("jdbc.url"));
+        dataSource.setUsername(properties.getProperty("jdbc.username"));
+        dataSource.setPassword(properties.getProperty("jdbc.password"));
 
-        try(var dataSource = new HikariDataSource()) {
-            dataSource.setJdbcUrl(properties.getProperty("jdbc.url"));
-            dataSource.setUsername(properties.getProperty("jdbc.username"));
-            dataSource.setPassword(properties.getProperty("jdbc.password"));
+        try {
             Flyway.configure().dataSource(dataSource).load().migrate();
-            return dataSource;
         } catch (FlywayException e) {
             logger.error("Unable to migrate database", e);
             throw new RuntimeException(e);
         }
+        return dataSource;
     }
 }
