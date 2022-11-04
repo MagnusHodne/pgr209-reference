@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+  sqlserver:
+    container_name: pgr209-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - '1433:1433'
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=N0tAtAllS3cr3t
